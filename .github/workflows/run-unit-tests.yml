@@ -15,4 +15,5 @@ jobs:
         with:
           codecov_token         : ${{ secrets.CODECOV_TOKEN         }}
           package_name          : ${{ secrets.PACKAGE_NAME          }}
+          GIT_HUB__ACCESS_TOKEN : ${{ secrets.GIT_HUB__ACCESS_TOKEN }}
 

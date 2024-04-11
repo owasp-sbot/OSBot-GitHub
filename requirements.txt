@@ -1,6 +1,10 @@
+# for OSBot-Utils
 git+https://github.com/owasp-sbot/OSBot-Utils.git@dev
 python-dotenv
 pyyaml
+
+# for GitHub api
+PyGithub
 
 # for development
 pytest
