@@ -1,5 +1,8 @@
 import pytest
 from unittest                           import TestCase
+
+from dotenv import load_dotenv
+
 from osbot_github.api.GitHub_Rest_API   import GitHub_Rest_API
 from osbot_github.utils.Version         import Version
 from osbot_utils.utils.Misc             import list_set
@@ -9,6 +12,7 @@ class test_GitHub_Rest_API(TestCase):
     test_file_path  : str
     @classmethod
     def setUpClass(cls):
+        load_dotenv()
         cls.github_rest_api = GitHub_Rest_API(target_branch='dev')
         cls.test_file_path = 'docs/test_files/an_markdown_file.md'
 

@@ -26,7 +26,6 @@ class GitHub_Rest_API:
         self.session        = requests.Session()
 
     def access_token(self):
-        load_dotenv()
         return getenv(GIT_HUB__ACCESS_TOKEN)
 
     def commits(self, count=5):
