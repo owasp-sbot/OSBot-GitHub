@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from osbot_github.dbs.Sqlite__GitHub import Sqlite__GitHub, ENV_NAME_PATH_LOCAL_DBS, DB_NAME__GIT_HUB, \
     SQLITE_TABLE__REPOS
-from osbot_utils.utils.Files import parent_folder, file_name, file_exists, folder_exists
+from osbot_utils.utils.Files import parent_folder, file_name, file_exists, folder_exists, current_temp_folder
 
 
 class test_Sqlite__GitHub(TestCase):
@@ -18,7 +18,10 @@ class test_Sqlite__GitHub(TestCase):
         with self.db_github as _:
             assert _.exists()                         is True
             assert parent_folder(_.db_path)           == _.path_github_dbs()
-            assert parent_folder(_.path_github_dbs()) == environ.get(ENV_NAME_PATH_LOCAL_DBS)
+            if environ.get(ENV_NAME_PATH_LOCAL_DBS):
+                assert parent_folder(_.path_github_dbs()) == environ.get(ENV_NAME_PATH_LOCAL_DBS)
+            else:
+                assert parent_folder(_.path_github_dbs()) == current_temp_folder()
             assert file_name    (_.db_path)           == DB_NAME__GIT_HUB
             assert folder_exists(_.path_db_folder() ) is True
             assert folder_exists(_.path_github_dbs()) is True

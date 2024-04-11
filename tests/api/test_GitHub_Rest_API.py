@@ -34,7 +34,7 @@ class test_GitHub_Rest_API(TestCase):
         assert '# An Markdown file' in result.get('content')
 
     def test_file_download(self):
-        assert '1# An Markdown file' in self.github_rest_api.file_download(self.test_file_path)
+        assert '# An Markdown file' in self.github_rest_api.file_download(self.test_file_path)
 
     @pytest.mark.skip("to be refactored into s3")
     def test_folder_contents(self):

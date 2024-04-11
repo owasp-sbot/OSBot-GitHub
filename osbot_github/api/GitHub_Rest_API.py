@@ -4,6 +4,7 @@ import requests
 from dotenv import load_dotenv
 from github import Github
 
+from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Misc                       import datetime_to_str
 from osbot_utils.utils.Python_Logger              import logger_info
 from osbot_utils.decorators.lists.group_by        import group_by
@@ -54,7 +55,8 @@ class GitHub_Rest_API:
         return parsed_content.get('content')
 
     def file_download(self, file_path):
-        download_url = f'{GIT_HUB__REPO_PATH}/{self.target_repo}/{GIT_HUB__DEFAULT_BRANCH}/{file_path}'
+        download_url = f'{GIT_HUB__REPO_PATH}/{self.target_repo}/{self.target_branch}/{file_path}'
+        pprint(download_url)
         headers      = {'Authorization': f'token {self.access_token()}',
                         'Accept-Encoding': 'gzip'}
         response     = self.session.get(download_url, headers=headers)
