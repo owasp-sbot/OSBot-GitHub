@@ -1,7 +1,6 @@
 from os import getenv
 
 import requests
-from dotenv import load_dotenv
 from github import Github
 
 from osbot_utils.utils.Dev import pprint
