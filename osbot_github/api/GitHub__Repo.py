@@ -1,31 +1,14 @@
-from os import getenv
+from osbot_github.api.GitHub__API                   import GitHub__API
+from osbot_utils.base_classes.Kwargs_To_Self        import Kwargs_To_Self
+from osbot_utils.decorators.lists.group_by          import group_by
+from osbot_utils.decorators.lists.index_by          import index_by
+from osbot_utils.decorators.methods.cache_on_self   import cache_on_self
+from osbot_utils.utils.Misc                         import datetime_to_str
 
-import requests
-from github import Github
 
-from osbot_utils.utils.Dev import pprint
-from osbot_utils.utils.Misc                       import datetime_to_str
-from osbot_utils.utils.Python_Logger              import logger_info
-from osbot_utils.decorators.lists.group_by        import group_by
-from osbot_utils.decorators.lists.index_by        import index_by
-from osbot_utils.decorators.methods.cache_on_self import cache_on_self
-
-GIT_HUB__ACCESS_TOKEN   = "GIT_HUB__ACCESS_TOKEN"
-GIT_HUB__REPO_PATH      = 'https://raw.githubusercontent.com/'
-GIT_HUB__DEFAULT_BRANCH = 'main'
-GIT_HUB__DEFAULT_REPO   = 'owasp-sbot/OSBot-GitHub'
-
-# todo refactor this to one of the OSBot repos
-class GitHub_Rest_API:
-
-    def __init__(self, target_repo=None, target_branch=None):
-        self.target_repo    = target_repo   or GIT_HUB__DEFAULT_REPO
-        self.target_branch  = target_branch or GIT_HUB__DEFAULT_BRANCH
-        self.log_info       = logger_info()
-        self.session        = requests.Session()
-
-    def access_token(self):
-        return getenv(GIT_HUB__ACCESS_TOKEN)
+class GitHub__Repo(Kwargs_To_Self):
+    github_api : GitHub__API
+    repo_name  : str
 
     def commits(self, count=5):
         raw_commits = self.repo().get_commits().get_page(0)
@@ -45,20 +28,9 @@ class GitHub_Rest_API:
             commits.append(commit)
         return commits
 
-    def raw_contents(self, path=""):
-        return self.repo().get_contents(path)
-
     def file_content(self, path=""):
         parsed_content = self.file_parsed_content(path=path)
         return parsed_content.get('content')
-
-    def file_download(self, file_path):
-        download_url = f'{GIT_HUB__REPO_PATH}/{self.target_repo}/{self.target_branch}/{file_path}'
-        pprint(download_url)
-        headers      = {'Authorization': f'token {self.access_token()}',
-                        'Accept-Encoding': 'gzip'}
-        response     = self.session.get(download_url, headers=headers)
-        return response.text
 
     def file_parsed_content(self, path=""):
         raw_contents = self.raw_contents(path)
@@ -74,7 +46,6 @@ class GitHub_Rest_API:
             for raw_content in raw_contents:
                 content = self.parse_raw_content(raw_content)
                 folder_contents.append(content)
-
         return folder_contents
 
     @index_by
@@ -100,9 +71,6 @@ class GitHub_Rest_API:
                 all_contents.extend(self.folders_and_files(item['path']))
         return all_contents
 
-    def github(self):
-        return Github(self.access_token())
-
     def parse_raw_content(self, raw_content):
         if type(raw_content) is not list:
             item_content = {'name': raw_content.name,
@@ -119,6 +87,10 @@ class GitHub_Rest_API:
             return item_content
         return {}
 
+
+    def raw_contents(self, path=""):
+        return self.repo().get_contents(path)
+
     @cache_on_self
     def repo(self):
-        return self.github().get_repo(self.target_repo)
+        return self.github_api.github().get_repo(self.repo_name)
