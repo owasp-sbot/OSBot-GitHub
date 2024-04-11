@@ -4,24 +4,25 @@ from osbot_github.api.GitHub__API           import GitHub__API
 from osbot_github.api.GitHub__Repo          import GitHub__Repo
 from osbot_github.dbs.Table__GitHub__Repos  import REPO__OSBOT_GIT_HUB
 from osbot_github.utils.Version             import Version
+from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Files                import parent_folder, file_name
 from osbot_utils.utils.Misc                 import list_set
 
 
 class test_GitHub__Repo(TestCase):
     github_repo    : GitHub__Repo
-    repo_name      : str
+    repo_full_name : str
     test_file_path : str
 
     @classmethod
     def setUpClass(cls):
         load_dotenv()
-        cls.repo_name   = REPO__OSBOT_GIT_HUB
-        cls.github_repo = GitHub__Repo(repo_name=cls.repo_name)
-        cls.test_file_path = 'docs/test_files/an_markdown_file.md'
+        cls.repo_full_name   = REPO__OSBOT_GIT_HUB
+        cls.github_repo      = GitHub__Repo(repo_name=cls.repo_full_name)
+        cls.test_file_path   = 'docs/test_files/an_markdown_file.md'
 
     def test__init__(self):
-        assert self.github_repo.repo_name              == self.repo_name
+        assert self.github_repo.repo_name              == self.repo_full_name
         assert type(self.github_repo.github_api)       is GitHub__API
         assert list_set(self.github_repo.__locals__()) == ['github_api', 'repo_name']
 
@@ -77,6 +78,17 @@ class test_GitHub__Repo(TestCase):
         assert repo.full_name      == repo_full_name
         assert repo.name           == repo_name
         assert repo.git_url        == f'git://github.com/{REPO__OSBOT_GIT_HUB}.git'
+
+    def test_repo_data(self):
+        repo_data = self.github_repo.repo_data()
+        assert repo_data.get('full_name') == self.repo_full_name
+        assert list_set(repo_data) == ['created_date', 'description', 'forks', 'full_name', 'language', 'name', 'owner', 'pushed_date', 'size', 'stars', 'topics', 'updated_date', 'url', 'watchers']
+
+    def test_repo_obj(self):
+        repo_data = self.github_repo.repo_data()
+        repo_obj  = self.github_repo.repo_obj()
+        assert repo_obj.__attr_names__() == list_set(repo_data)
+        assert repo_obj.__locals__    () == repo_data
 
     # todo: refactor the getting of the job details into github_repo codebase
     def test_get_workflow_runs(self):

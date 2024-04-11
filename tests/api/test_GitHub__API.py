@@ -36,17 +36,6 @@ class test_GitHub_API(TestCase):
         branch         = 'dev'
         assert '# An Markdown file' in self.github_api.file_download(repo_full_name,branch, self.test_file_path)
 
-
-
-
-
-
-
-
-
-
-
-
     def test_repos_from_user(self):
         user_name = 'DinisCruz'
         repos = self.github_api.repos_from_user(user_name)

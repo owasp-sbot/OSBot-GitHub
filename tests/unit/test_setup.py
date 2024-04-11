@@ -12,8 +12,9 @@ from osbot_utils.utils.Files        import parent_folder
 
 
 EXPECTED_PACKAGES = ['osbot_github'            ,
+                     'osbot_github.api'        ,
                      'osbot_github.dbs'        ,
-                     'osbot_github.dbs.schemas',
+                     'osbot_github.schemas'    ,
                      'osbot_github.utils'      ]
 class test_setup(TestCase):
 
