@@ -2,17 +2,27 @@ from osbot_utils.base_classes.Kwargs_To_Self import Kwargs_To_Self
 
 
 class Schema__Repo(Kwargs_To_Self):
-    name         : str
-    owner        : str
-    full_name    : str
-    description  : str
-    url          : str
-    pushed_date  : int
-    created_date : int
-    updated_date : int
-    size         : int
-    stars        : int
-    forks        : int
-    watchers     : int
-    language     : str
-    topics       : str
+    archived       : bool
+    created_at     : int
+    default_branch : str
+    description    : str
+    forks          : int
+    full_name      : str
+    language       : str
+    name           : str
+    owner          : str
+    organisation   : str
+    private        : bool
+    pushed_at      : int
+    repo_id        : int
+    size           : int
+    stars          : int
+    topics         : str
+    updated_at     : int
+    url            : str
+    visibility     : str
+    watchers       : int
+
+    def __init__(self):
+        super().__init__()
+        self.locked()

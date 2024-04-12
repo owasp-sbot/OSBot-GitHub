@@ -4,7 +4,6 @@ from osbot_github.api.GitHub__API           import GitHub__API
 from osbot_github.api.GitHub__Repo          import GitHub__Repo
 from osbot_github.dbs.Table__GitHub__Repos  import REPO__OSBOT_GIT_HUB
 from osbot_github.utils.Version             import Version
-from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Files                import parent_folder, file_name
 from osbot_utils.utils.Misc                 import list_set
 
@@ -82,7 +81,10 @@ class test_GitHub__Repo(TestCase):
     def test_repo_data(self):
         repo_data = self.github_repo.repo_data()
         assert repo_data.get('full_name') == self.repo_full_name
-        assert list_set(repo_data) == ['created_date', 'description', 'forks', 'full_name', 'language', 'name', 'owner', 'pushed_date', 'size', 'stars', 'topics', 'updated_date', 'url', 'watchers']
+        assert list_set(repo_data) == ['archived', 'created_at', 'default_branch', 'description',
+                                       'forks', 'full_name', 'language', 'name', 'organisation',
+                                       'owner', 'private', 'pushed_at', 'repo_id', 'size', 'stars',
+                                       'topics', 'updated_at', 'url', 'visibility', 'watchers']
 
     def test_repo_obj(self):
         repo_data = self.github_repo.repo_data()

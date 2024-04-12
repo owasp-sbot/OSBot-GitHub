@@ -5,7 +5,8 @@ from osbot_utils.decorators.lists.group_by          import group_by
 from osbot_utils.decorators.lists.index_by          import index_by
 from osbot_utils.decorators.methods.cache_on_self   import cache_on_self
 from osbot_utils.utils.Dev import pprint
-from osbot_utils.utils.Misc import datetime_to_str, timestamp_to_str
+from osbot_utils.utils.Misc import datetime_to_str, timestamp_to_str, str_to_date_time
+from osbot_utils.utils.Objects import obj_info
 
 
 class GitHub__Repo(Kwargs_To_Self):
@@ -100,20 +101,28 @@ class GitHub__Repo(Kwargs_To_Self):
     def repo_data(self):
         repo = self.repo()
         repo_data = {
-            "name"         : repo.name,
-            "owner"        : repo.owner.login,
-            "full_name"    : repo.full_name,
-            "description"  : repo.description,
-            "url"          : repo.url,
-            "pushed_date"  : int(repo.pushed_at.timestamp () * 1000),
-            "created_date" : int(repo.created_at.timestamp() * 1000),
-            "updated_date" : int(repo.updated_at.timestamp() * 1000),
-            "size"         : repo.size,
-            "stars"        : repo.stargazers_count,
-            "forks"        : repo.forks_count,
-            "watchers"     : repo.watchers_count,
-            "language"     : repo.language,
-            "topics"       : ",".join(repo.get_topics()),
+            "archived"      : repo.archived                          ,
+            "created_at"    : int(repo.created_at.timestamp() * 1000),
+            "default_branch": repo.default_branch                    ,
+            "description"   : repo.description                       ,
+            "forks"         : repo.forks_count                       ,
+            "full_name"     : repo.full_name                         ,
+            "language"      : repo.language                          ,
+            "name"          : repo.name                              ,
+            "owner"         : repo.owner.login                       ,
+            "organisation"  : repo.organization.login                ,
+            "private"       : repo.private                           ,
+            "pushed_at"     : int(repo.pushed_at.timestamp () * 1000),
+            "repo_id"       : repo.id                                ,
+            "size"          : repo.size                              ,
+            "stars"         : repo.stargazers_count                  ,
+            "topics"        : ",".join(repo.get_topics())            ,
+            "updated_at"    : int(repo.updated_at.timestamp() * 1000),
+            "url"           : repo.url                               ,
+            "visibility"    : repo.visibility                        ,
+            "watchers"      : repo.watchers_count                    ,
+
+
         }
         return repo_data
 
