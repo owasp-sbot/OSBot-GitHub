@@ -26,6 +26,12 @@ class Sqlite__GitHub(Sqlite__Database):
     def path_sqlite_github(self):
         return path_combine(self.path_github_dbs(), DB_NAME__GIT_HUB)
 
+    def setup(self):
+        folder_create(self.path_db_folder())
+        folder_create(self.path_github_dbs())
+        self.table_repos__create()
+        return self
+
     @cache_on_self
     def table_repos(self):
         return self.table(SQLITE_TABLE__REPOS)
@@ -38,9 +44,4 @@ class Sqlite__GitHub(Sqlite__Database):
                 return True
         return False
 
-    def setup(self):
-        folder_create(self.path_db_folder())
-        folder_create(self.path_github_dbs())
-        self.table_repos__create()
-        return self
 
