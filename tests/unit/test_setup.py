@@ -13,6 +13,7 @@ from osbot_utils.utils.Files        import parent_folder
 
 EXPECTED_PACKAGES = ['osbot_github'            ,
                      'osbot_github.api'        ,
+                     'osbot_github.api.cache'  ,
                      'osbot_github.dbs'        ,
                      'osbot_github.schemas'    ,
                      'osbot_github.utils'      ]
