@@ -4,10 +4,7 @@ import requests
 from github import Github
 
 from osbot_utils.utils.Dev import pprint
-from osbot_utils.utils.Misc                       import datetime_to_str
 from osbot_utils.utils.Python_Logger              import logger_info
-from osbot_utils.decorators.lists.group_by        import group_by
-from osbot_utils.decorators.lists.index_by        import index_by
 from osbot_utils.decorators.methods.cache_on_self import cache_on_self
 
 GIT_HUB__ACCESS_TOKEN   = "GIT_HUB__ACCESS_TOKEN"
@@ -39,15 +36,19 @@ class GitHub__API:
         return Github(self.access_token())
 
     @cache_on_self
-    def organisation(self, user_name):
-        return self.github().get_user(user_name)
+    def organization(self, org_name):
+        return self.github().get_organization(org_name)
 
     @cache_on_self
     def user(self, user_name):
         return self.github().get_user(user_name)
 
-    def repos_from_user(self, user_name):
-        return self.user(user_name).get_repos()
+    def repo(self, repo_full_name):
+        return self.github().get_repo(repo_full_name)
 
-    def repos_from_organisation(self, org_name):
-        return self.organisation(org_name).get_repos()
+    def repos_from_user(self, user_name):
+        user = self.user(user_name=user_name)
+        return user.get_repos()
+
+    def repos_from_organization(self, org_name):
+        return self.organization(org_name=org_name).get_repos()
