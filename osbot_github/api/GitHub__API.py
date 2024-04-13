@@ -15,11 +15,9 @@ GIT_HUB__DEFAULT_REPO   = 'owasp-sbot/OSBot-GitHub'
 
 class GitHub__API:
 
-    def __init__(self):     #, target_repo=None, target_branch=None):
-        #self.target_repo    = target_repo   or GIT_HUB__DEFAULT_REPO
-        #self.target_branch  = target_branch or GIT_HUB__DEFAULT_BRANCH
-        self.log_info       = logger_info()
-        self.session        = requests.Session()
+    def __init__(self):
+        self.log_info = logger_info()
+        self.session  = requests.Session()
 
     def access_token(self):
         return getenv(GIT_HUB__ACCESS_TOKEN)

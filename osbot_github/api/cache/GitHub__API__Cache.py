@@ -24,6 +24,9 @@ class GitHub__API__Cache(Sqlite__Cache__Requests, GitHub__API):
     def organization(self, **kwargs):
         return self.invoke(super().organization, kwargs)
 
+    def repo(self, **kwargs):
+        return self.invoke(super().repo, kwargs)
+
     def repos_from_user(self, **kwargs):
         def target(**target_kwargs):
             user      = self.user(**target_kwargs)

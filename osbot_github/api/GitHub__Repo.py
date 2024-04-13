@@ -1,22 +1,20 @@
 from osbot_github.api.GitHub__API                   import GitHub__API
-from osbot_github.schemas.Schema__Repo import Schema__Repo
+from osbot_github.schemas.Schema__Repo              import Schema__Repo
 from osbot_utils.base_classes.Kwargs_To_Self        import Kwargs_To_Self
 from osbot_utils.decorators.lists.group_by          import group_by
 from osbot_utils.decorators.lists.index_by          import index_by
 from osbot_utils.decorators.methods.cache_on_self   import cache_on_self
-from osbot_utils.utils.Dev import pprint
-from osbot_utils.utils.Misc import datetime_to_str, timestamp_to_str, str_to_date_time
-from osbot_utils.utils.Objects import obj_info
+from osbot_utils.utils.Misc                         import datetime_to_str
 
 
 class GitHub__Repo(Kwargs_To_Self):
     github_api : GitHub__API
     repo_name  : str
 
-    def commits(self, count=5):
-        raw_commits = self.repo().get_commits().get_page(0)
+    def commits(self, page=0):
+        raw_commits = self.repo().get_commits().get_page(page)
         commits = []
-        for raw_commit in raw_commits[:count]:
+        for raw_commit in raw_commits:
             # files = []
             # for file in raw_commit.files:
             #     files.append(file.filename)
@@ -96,7 +94,7 @@ class GitHub__Repo(Kwargs_To_Self):
 
     @cache_on_self
     def repo(self):
-        return self.github_api.github().get_repo(self.repo_name)
+        return self.github_api.repo(repo_full_name=self.repo_name)
 
     def repo_data(self):
         repo = self.repo()

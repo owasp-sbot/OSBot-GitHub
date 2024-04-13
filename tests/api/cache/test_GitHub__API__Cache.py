@@ -53,38 +53,17 @@ class test_GitHub__API__Cache(TestCase):
             assert _.pickle_response            is True
 
 
-    def test_user(self):
-        print()
-        user_name   = GIT_HUB__USER_NAME
-        user_1      = self.github_api_cache.user(user_name=user_name)
-        user_2      = self.github_api_cache.user(user_name=user_name)
-        user_3      = self.github_api_cache.user(user_name=user_name)
-        assert type(user_1) is NamedUser
-        assert type(user_2) is NamedUser
-        assert type(user_3) is NamedUser
+    # this is tested ok in test_GitHub_API
+    # def test_user(self):
+    #     print()
+    #     user_name   = GIT_HUB__USER_NAME
+    #     user_1      = self.github_api_cache.user(user_name=user_name)
+    #     user_2      = self.github_api_cache.user(user_name=user_name)
+    #     user_3      = self.github_api_cache.user(user_name=user_name)
+    #     assert type(user_1) is NamedUser
+    #     assert type(user_2) is NamedUser
+    #     assert type(user_3) is NamedUser
 
-
-    def test__pickle_roundtrip(self):
-        def check_pickle_roundtrip(target, expected_type):
-            pickled_data   = pickle_save_to_bytes(target)
-            target_pickled = pickle_load_from_bytes(pickled_data)
-
-            assert type(pickled_data)       is bytes
-            assert  target                  == target_pickled
-            assert obj_data(target_pickled) == obj_data(target_pickled)
-            assert type(target)             is expected_type
-
-        org_name       = GIT_HUB__ORG_NAME__OWASP_SBOT
-        user_name      = GIT_HUB__USER_NAME
-        repo_full_name = GIT_HUB__REPO__OSBOT_GITHUB
-
-        #check_pickle_roundtrip(self.github_api_cache.github().get_organization(org_name ), Organization)
-        #check_pickle_roundtrip(self.github_api_cache.github().get_user        (user_name), NamedUser   )
-        #check_pickle_roundtrip(self.github_api_cache.github().get_repo        (repo     ), Repository  )
-
-        check_pickle_roundtrip(self.github_api_cache.organization(org_name       = org_name       ), Organization)
-        check_pickle_roundtrip(self.github_api_cache.user        (user_name      = user_name      ), NamedUser   )
-        check_pickle_roundtrip(self.github_api_cache.repo        (repo_full_name = repo_full_name ), Repository  )
 
 
 

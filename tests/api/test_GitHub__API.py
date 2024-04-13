@@ -1,21 +1,14 @@
-import pytest
-from unittest                           import TestCase
-
-from dotenv import load_dotenv
-from github import Github
-from github.NamedUser import NamedUser
-from github.Organization import Organization
-from github.PaginatedList import PaginatedList
-from github.Repository import Repository
-
+from unittest                                   import TestCase
+from dotenv                                     import load_dotenv
+from github.NamedUser                           import NamedUser
+from github.Organization                        import Organization
+from github.Repository                          import Repository
 from osbot_github.api.GitHub__API               import GitHub__API
 from osbot_github.api.cache.GitHub__API__Cache  import GitHub__API__Cache
 from osbot_github.dbs.Table__GitHub__Repos      import REPO__OSBOT_GIT_HUB
-from osbot_github.utils.Version         import Version
-from osbot_utils.utils.Dev import pprint
-from osbot_utils.utils.Misc             import list_set
-from osbot_utils.utils.Objects import pickle_save_to_bytes, pickle_load_from_bytes
-from tests.api.cache.test_GitHub__API__Cache import GIT_HUB__USER_NAME, GIT_HUB__ORG_NAME__OWASP_SBOT
+from osbot_utils.utils.Misc import list_set
+from osbot_utils.utils.Objects                  import pickle_save_to_bytes, pickle_load_from_bytes, obj_data
+from tests.api.cache.test_GitHub__API__Cache    import GIT_HUB__USER_NAME, GIT_HUB__ORG_NAME__OWASP_SBOT, GIT_HUB__REPO__OSBOT_GITHUB
 
 
 class test_GitHub_API(TestCase):
@@ -30,9 +23,17 @@ class test_GitHub_API(TestCase):
         #cls.github_api.update()
         cls.test_file_path = 'docs/test_files/an_markdown_file.md'
 
-    # def test__init__(self):
-    #     assert self.github_api.target_repo == 'owasp-sbot/OSBot-GitHub'
-    #     assert self.github_api.target_branch == 'dev'
+    def test__init__(self):
+        assert list_set(self.github_api.__dict__) == ['add_timestamp'   ,
+                                                      'cache_only_mode' ,
+                                                      'db_name'         ,
+                                                      'enabled'         ,
+                                                      'log_info'        ,
+                                                      'pickle_response' ,
+                                                      'session'         ,
+                                                      'sqlite_bedrock'  ,
+                                                      'table_name'      ,
+                                                      'update_mode'     ]
 
     def test_access_token(self):
         assert self.github_api.access_token() is not None
@@ -70,8 +71,7 @@ class test_GitHub_API(TestCase):
         assert type(repo )      is Repository
         assert repo.owner.login == user_name
         assert len(repos)       > 40
-
-        pprint(f'there are {len(repos)} repos in user {user_name}')
+        #pprint(f'there are {len(repos)} repos in user {user_name}')
 
     def test_repos_from_organization(self):
         org_name = GIT_HUB__ORG_NAME__OWASP_SBOT
@@ -80,7 +80,30 @@ class test_GitHub_API(TestCase):
         assert type(repos) is list               # PaginatedList
         assert type(repo ) is Repository
         assert len (repos) > 20
-        pprint(f'there are {len(repos)} repos in organization {org_name}')
+        #pprint(f'there are {len(repos)} repos in organization {org_name}')
 
 
+
+
+    def test__pickle_roundtrip(self):
+        def check_pickle_roundtrip(target, expected_type):
+            pickled_data   = pickle_save_to_bytes(target)
+            target_pickled = pickle_load_from_bytes(pickled_data)
+
+            assert type(pickled_data)       is bytes
+            assert  target                  == target_pickled
+            assert obj_data(target_pickled) == obj_data(target_pickled)
+            assert type(target)             is expected_type
+
+        org_name       = GIT_HUB__ORG_NAME__OWASP_SBOT
+        user_name      = GIT_HUB__USER_NAME
+        repo_full_name = GIT_HUB__REPO__OSBOT_GITHUB
+
+        #check_pickle_roundtrip(self.github_api_cache.github().get_organization(org_name ), Organization)
+        #check_pickle_roundtrip(self.github_api_cache.github().get_user        (user_name), NamedUser   )
+        #check_pickle_roundtrip(self.github_api_cache.github().get_repo        (repo     ), Repository  )
+
+        check_pickle_roundtrip(self.github_api.organization(org_name       = org_name       ), Organization)
+        check_pickle_roundtrip(self.github_api.user        (user_name      = user_name      ), NamedUser   )
+        check_pickle_roundtrip(self.github_api.repo        (repo_full_name = repo_full_name ), Repository  )
 

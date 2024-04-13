@@ -2,8 +2,10 @@ from unittest                               import TestCase
 from dotenv                                 import load_dotenv
 from osbot_github.api.GitHub__API           import GitHub__API
 from osbot_github.api.GitHub__Repo          import GitHub__Repo
+from osbot_github.api.cache.GitHub__API__Cache import GitHub__API__Cache
 from osbot_github.dbs.Table__GitHub__Repos  import REPO__OSBOT_GIT_HUB
 from osbot_github.utils.Version             import Version
+#from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Files                import parent_folder, file_name
 from osbot_utils.utils.Misc                 import list_set
 
@@ -16,13 +18,14 @@ class test_GitHub__Repo(TestCase):
     @classmethod
     def setUpClass(cls):
         load_dotenv()
-        cls.repo_full_name   = REPO__OSBOT_GIT_HUB
-        cls.github_repo      = GitHub__Repo(repo_name=cls.repo_full_name)
-        cls.test_file_path   = 'docs/test_files/an_markdown_file.md'
+        cls.repo_full_name         = REPO__OSBOT_GIT_HUB
+        cls.github_repo            = GitHub__Repo(repo_name=cls.repo_full_name)
+        cls.test_file_path         = 'docs/test_files/an_markdown_file.md'
+        cls.github_repo.github_api = GitHub__API__Cache()
 
     def test__init__(self):
         assert self.github_repo.repo_name              == self.repo_full_name
-        assert type(self.github_repo.github_api)       is GitHub__API
+        assert type(self.github_repo.github_api)       is GitHub__API__Cache
         assert list_set(self.github_repo.__locals__()) == ['github_api', 'repo_name']
 
     def test_commits(self):
