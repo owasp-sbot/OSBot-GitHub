@@ -43,7 +43,7 @@ class test_GitHub__API__Cache(TestCase):
     def test___init__(self):
         with self.github_api_cache as _:
             assert type      (_)                is GitHub__API__Cache
-            assert base_types(_)                == [Sqlite__Cache__Requests, GitHub__API, Kwargs_To_Self, object,object]
+            assert base_types(_)                == [Sqlite__Cache__Requests, Kwargs_To_Self, object]
             assert _.db_name                    == SQLITE_DB_NAME__GIT_HUB_API_CACHE
             assert _.table_name                 == SQLITE_TABLE__BEDROCK_REQUESTS
             assert type      (_.sqlite_bedrock) is Sqlite__DB__Requests
