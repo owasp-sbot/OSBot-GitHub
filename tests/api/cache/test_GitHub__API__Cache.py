@@ -13,7 +13,7 @@ from osbot_utils.helpers.sqlite.domains.Sqlite__DB__Local       import Sqlite__D
 from osbot_utils.helpers.sqlite.domains.Sqlite__DB__Requests    import Sqlite__DB__Requests
 from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Files                                    import temp_file, parent_folder, current_temp_folder, file_exists, file_not_exists
-from osbot_utils.utils.Json import json_dumps
+from osbot_utils.utils.Json import json_dumps, from_json_str
 from osbot_utils.utils.Objects import base_types, obj_info, pickle_save_to_bytes, pickle_load_from_bytes, obj_data
 
 GIT_HUB__ORG_NAME__OWASP_SBOT = 'owasp-sbot'
@@ -55,7 +55,9 @@ class test_GitHub__API__Cache(TestCase):
 
     # this is tested ok in test_GitHub_API
     # def test_user(self):
+    #     self.github_api_cache.patch_apply()
     #     print()
+    #     #self.github_api_cache.disable()
     #     user_name   = GIT_HUB__USER_NAME
     #     user_1      = self.github_api_cache.user(user_name=user_name)
     #     user_2      = self.github_api_cache.user(user_name=user_name)
@@ -63,6 +65,28 @@ class test_GitHub__API__Cache(TestCase):
     #     assert type(user_1) is NamedUser
     #     assert type(user_2) is NamedUser
     #     assert type(user_3) is NamedUser
+
+    # def test_monkey_patch(self):
+    #     self.github_api_cache.patch_apply()
+    #
+    #     print()
+    #     print()
+    #     github_api = GitHub__API()
+    #     user_name = 'DinisCruz'
+    #     user_1  = github_api.user(user_name=user_name)
+    #     user_1.get_repos()[0]
+    #     user_1.get_repos()[0]
+    #
+    #     user_2 = github_api.user(user_name=user_name)
+    #     user_3 = github_api.user(user_name=user_name)
+    #     #pprint(user)
+    #     #repos = user.get_repos()
+    #     #repo = repos[30]
+    #     # list(repos)
+    #     # list(repo.get_commits())
+    #     #
+    #
+    #     #self.github_api_cache.organization(org_name='OWASP')
 
 
 

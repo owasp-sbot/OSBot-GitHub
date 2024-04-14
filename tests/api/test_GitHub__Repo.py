@@ -11,17 +11,24 @@ from osbot_utils.utils.Misc                 import list_set
 
 
 class test_GitHub__Repo(TestCase):
-    github_repo    : GitHub__Repo
-    repo_full_name : str
-    test_file_path : str
+    github_repo      : GitHub__Repo
+    github_api_cache : GitHub__API__Cache
+    repo_full_name   : str
+    test_file_path   : str
 
     @classmethod
     def setUpClass(cls):
+        cls.github_api_cache = GitHub__API__Cache().patch_apply()
+
         load_dotenv()
         cls.repo_full_name         = REPO__OSBOT_GIT_HUB
         cls.github_repo            = GitHub__Repo(repo_name=cls.repo_full_name)
         cls.test_file_path         = 'docs/test_files/an_markdown_file.md'
         cls.github_repo.github_api = GitHub__API__Cache()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.github_api_cache.patch_restore()
 
     def test__init__(self):
         assert self.github_repo.repo_name              == self.repo_full_name
@@ -97,7 +104,6 @@ class test_GitHub__Repo(TestCase):
 
     # todo: refactor the getting of the job details into github_repo codebase
     def test_get_workflow_runs(self):
-        print()
         repo = self.github_repo.repo()
         workflow_runs_list = []
         n = 2
