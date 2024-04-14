@@ -22,7 +22,7 @@ class test_GitHub__Repo(TestCase):
 
         load_dotenv()
         cls.repo_full_name         = REPO__OSBOT_GIT_HUB
-        cls.github_repo            = GitHub__Repo(repo_name=cls.repo_full_name)
+        cls.github_repo            = GitHub__Repo(full_name=cls.repo_full_name)
         cls.test_file_path         = 'docs/test_files/an_markdown_file.md'
         cls.github_repo.github_api = GitHub__API__Cache()
 
@@ -31,9 +31,9 @@ class test_GitHub__Repo(TestCase):
         cls.github_api_cache.patch_restore()
 
     def test__init__(self):
-        assert self.github_repo.repo_name              == self.repo_full_name
+        assert self.github_repo.full_name              == self.repo_full_name
         assert type(self.github_repo.github_api)       is GitHub__API__Cache
-        assert list_set(self.github_repo.__locals__()) == ['github_api', 'repo_name']
+        assert list_set(self.github_repo.__locals__()) == ['full_name', 'github_api']
 
     def test_commits(self):
         commits = self.github_repo.commits()
@@ -94,8 +94,8 @@ class test_GitHub__Repo(TestCase):
         assert repo_data.get('full_name') == self.repo_full_name
         assert list_set(repo_data) == ['archived', 'created_at', 'default_branch', 'description',
                                        'forks', 'full_name', 'language', 'name', 'organisation',
-                                       'owner', 'private', 'pushed_at', 'repo_id', 'size', 'stars',
-                                       'topics', 'updated_at', 'url', 'visibility', 'watchers']
+                                       'owner', 'parent', 'private', 'pushed_at', 'repo_id', 'size', 'stars',
+                                       'updated_at', 'url', 'visibility', 'watchers']
 
     def test_repo_obj(self):
         repo_data = self.github_repo.repo_data()

@@ -9,7 +9,7 @@ from osbot_utils.utils.Misc                         import datetime_to_str
 
 class GitHub__Repo(Kwargs_To_Self):
     github_api : GitHub__API
-    repo_name  : str
+    full_name  : str
 
     def commits(self, page=0):
         raw_commits = self.repo().get_commits().get_page(page)
@@ -72,6 +72,9 @@ class GitHub__Repo(Kwargs_To_Self):
                 all_contents.extend(self.folders_and_files(item['path']))
         return all_contents
 
+    def info(self):
+        return self.repo_data()
+
     def parse_raw_content(self, raw_content):
         if type(raw_content) is not list:
             item_content = {'name': raw_content.name,
@@ -94,7 +97,7 @@ class GitHub__Repo(Kwargs_To_Self):
 
     @cache_on_self
     def repo(self):
-        return self.github_api.repo(repo_full_name=self.repo_name)
+        return self.github_api.repo(repo_full_name=self.full_name)
 
     def repo_data(self):
         repo = self.repo()
@@ -109,19 +112,19 @@ class GitHub__Repo(Kwargs_To_Self):
             "name"          : repo.name                              ,
             "owner"         : repo.owner.login                       ,
             "organisation"  : repo.organization.login                ,
+            "parent"        : ''                                     ,
             "private"       : repo.private                           ,
             "pushed_at"     : int(repo.pushed_at.timestamp () * 1000),
             "repo_id"       : repo.id                                ,
             "size"          : repo.size                              ,
             "stars"         : repo.stargazers_count                  ,
-            "topics"        : ",".join(repo.get_topics())            ,
             "updated_at"    : int(repo.updated_at.timestamp() * 1000),
             "url"           : repo.url                               ,
             "visibility"    : repo.visibility                        ,
             "watchers"      : repo.watchers_count                    ,
-
-
         }
+        if repo.parent:
+            repo_data['parent'] = repo.parent.full_name
         return repo_data
 
     def repo_obj(self):

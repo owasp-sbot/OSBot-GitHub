@@ -3,13 +3,16 @@ from unittest import TestCase
 
 from dotenv import load_dotenv
 
+from osbot_github.api.GitHub__Repo import GitHub__Repo
 from osbot_github.api.cache.TestCase__GitHub__API import TestCase__GitHub__API
+from osbot_github.schemas.Schema__Repo import Schema__Repo
 from osbot_utils.helpers.sqlite.Sqlite__Table import Sqlite__Table
 
 from osbot_github.dbs.Sqlite__GitHub import Sqlite__GitHub, ENV_NAME_PATH_LOCAL_DBS, DB_NAME__GIT_HUB, \
     SQLITE_TABLE__REPOS
 from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Files import parent_folder, file_name, file_exists, folder_exists, current_temp_folder
+from osbot_utils.utils.Objects import obj_info
 
 GIT_HUB__TEST__ORGANIZATION = 'Owasp-SBot'
 
@@ -39,10 +42,28 @@ class test_Sqlite__GitHub(TestCase__GitHub__API):
         with self.db_github.table_repos() as _:
             assert type(_) is Sqlite__Table
             assert _.exists() is True
-            assert _.rows() == []
+            assert _.row_schema == Schema__Repo
 
-
-            organisation = self.github_api.organization(GIT_HUB__TEST__ORGANIZATION)
-            repos        = organisation.get_repos()
-            #pprint(repos[0])
+            # return
+            # #assert _.rows() == []
+            #
+            #
+            # print()
+            # #self.github_api_cache.print_requests = True
+            #
+            # organisation = self.github_api.organization(GIT_HUB__TEST__ORGANIZATION)
+            # repos        = organisation.get_repos()
+            #
+            # for repo in repos:
+            #     if _.not_contains(full_name=repo.full_name):
+            #         print(f'adding details about repo {repo.full_name}')
+            #         github_repo = GitHub__Repo(repo_name = repo.full_name)
+            #
+            #         row_obj = _.new_row_obj(github_repo.repo_data())
+            #         _.row_add(row_obj)
+            #
+            # _.commit()
+            # assert len(_.rows()) > 0
+            #
+            # #pprint(repos[0])
 

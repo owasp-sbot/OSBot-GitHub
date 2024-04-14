@@ -25,9 +25,7 @@ class Table__GitHub__Repos(Kwargs_To_Self):
                 return True
 
     def repo(self, repo_full_name):
-        git_hub_repo = GitHub__Repo(repo_name=repo_full_name)
-        repo_obj     = git_hub_repo.repo_obj()
-        return repo_obj
+        return  GitHub__Repo(full_name=repo_full_name)
 
     def setup(self):
         self.create()

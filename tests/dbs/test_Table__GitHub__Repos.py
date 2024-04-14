@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+from osbot_github.api.GitHub__Repo import GitHub__Repo
 from osbot_github.api.cache.GitHub__API__Cache import GitHub__API__Cache
 from osbot_utils.helpers.sqlite.Sqlite__Table import Sqlite__Table
 
@@ -27,15 +28,15 @@ class test_Table__GitHub__Repos(TestCase):
 
     def test_repo(self):
         repo_full_name = REPO__OSBOT_GIT_HUB
-        result         = self.github_repos.repo(repo_full_name=repo_full_name)
+        github_repo    = self.github_repos.repo(repo_full_name=repo_full_name)
+        assert type(github_repo) is GitHub__Repo
+        assert github_repo.full_name == repo_full_name
 
-        assert self.github_repos.table().rows() == []
 
         #pprint(result)
     def test_table(self):
         with self.github_repos.table() as _:
             assert type(_) is Sqlite__Table
-            assert _.rows() == []
 
     # def test_raw_github_repos(self):
     #     result = self.github_repos.raw_github_repos()

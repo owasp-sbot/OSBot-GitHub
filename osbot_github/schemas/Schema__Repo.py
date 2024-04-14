@@ -12,12 +12,12 @@ class Schema__Repo(Kwargs_To_Self):
     name           : str
     owner          : str
     organisation   : str
+    parent         : str
     private        : bool
     pushed_at      : int
     repo_id        : int
     size           : int
     stars          : int
-    topics         : str
     updated_at     : int
     url            : str
     visibility     : str
@@ -25,4 +25,3 @@ class Schema__Repo(Kwargs_To_Self):
 
     def __init__(self):
         super().__init__()
-        self.locked()

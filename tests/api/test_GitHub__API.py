@@ -17,7 +17,6 @@ from tests.api.cache.test_GitHub__API__Cache    import GIT_HUB__USER_NAME, GIT_H
 
 class test_GitHub_API(TestCase__GitHub__API):
     github_api       : GitHub__API
-    #github_api_cache : GitHub__API__Cache
     test_file_path   : str
 
     @classmethod
@@ -32,16 +31,7 @@ class test_GitHub_API(TestCase__GitHub__API):
 
 
     def test__init__(self):
-        assert list_set(self.github_api.__dict__) == [#'add_timestamp'   ,
-                                                      #'cache_only_mode' ,
-                                                      #'db_name'         ,
-                                                      #'enabled'         ,
-                                                      'log_info'        ,
-                                                      #'pickle_response' ,
-                                                      'session'         ]
-                                                      #'sqlite_bedrock'  ,
-                                                      #'table_name'      ,
-                                                      #'update_mode'     ]
+        assert list_set(self.github_api.__dict__) == ['log_info', 'session']
 
     def test_access_token(self):
         assert self.github_api.access_token() is not None

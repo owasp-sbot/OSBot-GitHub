@@ -15,6 +15,7 @@ class GitHub__API__Cache(Sqlite__Cache__Requests, GitHub__API):
     table_name          : str   = SQLITE_TABLE__BEDROCK_REQUESTS
     pickle_response     : bool  = True
     original_requestRaw : types.FunctionType
+    print_requests      : bool  = False
 
     def __init__(self, db_path=None):
         #self.disable()
@@ -23,8 +24,10 @@ class GitHub__API__Cache(Sqlite__Cache__Requests, GitHub__API):
         GitHub__API.__init__(self)
 
     def invoke_target(self, target, target_kwargs):
-        #print('******* > invoking target')
         args = target_kwargs.get('args')
+        if self.print_requests:
+            patched_self, cnx, verb, url, requestHeaders, input = args
+            print(f'> http call to : {verb} {url}')
         return target(*args)
 
     def patch_apply(self):
@@ -35,6 +38,8 @@ class GitHub__API__Cache(Sqlite__Cache__Requests, GitHub__API):
             invoke_kwargs = dict(target        = self.original_requestRaw,
                                  target_kwargs = target_kwargs           ,
                                  request_data  = request_data            )
+            if self.print_requests:
+                print(f'# call to : {verb} {url}')
             response = self.invoke_with_cache(**invoke_kwargs)
             status, responseHeaders, output = response
             #print(f'---> {url}')
