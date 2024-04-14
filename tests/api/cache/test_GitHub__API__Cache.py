@@ -5,7 +5,8 @@ from github.Organization import Organization
 from github.Repository import Repository
 
 from osbot_github.api.GitHub__API import GitHub__API
-from osbot_github.api.cache.GitHub__API__Cache                  import GitHub__API__Cache, SQLITE_DB_NAME__GIT_HUB_API_CACHE, SQLITE_TABLE__BEDROCK_REQUESTS
+from osbot_github.api.cache.GitHub__API__Cache import GitHub__API__Cache, SQLITE_DB_NAME__GIT_HUB_API_CACHE, \
+    SQLITE_TABLE__BEDROCK_REQUESTS, Sqlite__Cache__Requests__Patch
 from osbot_utils.helpers.sqlite.Sqlite__Database                import Sqlite__Database
 from osbot_utils.base_classes.Kwargs_To_Self                    import Kwargs_To_Self
 from osbot_utils.helpers.sqlite.domains.Sqlite__Cache__Requests import Sqlite__Cache__Requests
@@ -43,7 +44,7 @@ class test_GitHub__API__Cache(TestCase):
     def test___init__(self):
         with self.github_api_cache as _:
             assert type      (_)                is GitHub__API__Cache
-            assert base_types(_)                == [Sqlite__Cache__Requests, Kwargs_To_Self, object]
+            assert base_types(_)                == [Sqlite__Cache__Requests__Patch, Sqlite__Cache__Requests, Kwargs_To_Self, object]
             assert _.db_name                    == SQLITE_DB_NAME__GIT_HUB_API_CACHE
             assert _.table_name                 == SQLITE_TABLE__BEDROCK_REQUESTS
             assert type      (_.sqlite_bedrock) is Sqlite__DB__Requests

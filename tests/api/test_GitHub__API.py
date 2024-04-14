@@ -28,7 +28,8 @@ class test_GitHub_API(TestCase__GitHub__API):
         #cls.github_api.update()
         cls.test_file_path = 'docs/test_files/an_markdown_file.md'
 
-
+    # def setUp(self):
+    #     self.github_api_cache.print_requests = True
 
     def test__init__(self):
         assert list_set(self.github_api.__dict__) == ['log_info', 'session']
