@@ -6,30 +6,29 @@ from github.PaginatedList import PaginatedList
 from github.Repository                          import Repository
 from osbot_github.api.GitHub__API               import GitHub__API
 from osbot_github.api.cache.GitHub__API__Cache  import GitHub__API__Cache
+from osbot_github.api.cache.TestCase__GitHub__API import TestCase__GitHub__API
 from osbot_github.dbs.Table__GitHub__Repos      import REPO__OSBOT_GIT_HUB
 from osbot_utils.testing.Duration import Duration
+from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Misc import list_set
 from osbot_utils.utils.Objects                  import pickle_save_to_bytes, pickle_load_from_bytes, obj_data
 from tests.api.cache.test_GitHub__API__Cache    import GIT_HUB__USER_NAME, GIT_HUB__ORG_NAME__OWASP_SBOT, GIT_HUB__REPO__OSBOT_GITHUB
 
 
-class test_GitHub_API(TestCase):
+class test_GitHub_API(TestCase__GitHub__API):
     github_api       : GitHub__API
-    github_api_cache : GitHub__API__Cache
+    #github_api_cache : GitHub__API__Cache
     test_file_path   : str
 
     @classmethod
     def setUpClass(cls):
-        cls.github_api_cache = GitHub__API__Cache().patch_apply()
+        super().setUpClass()
         load_dotenv()
         cls.github_api = GitHub__API()
         #cls.github_api.disable()
         #cls.github_api.update()
         cls.test_file_path = 'docs/test_files/an_markdown_file.md'
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.github_api_cache.patch_restore()
 
 
     def test__init__(self):

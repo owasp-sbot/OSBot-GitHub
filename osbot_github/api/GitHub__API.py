@@ -22,13 +22,13 @@ class GitHub__API:
     def access_token(self):
         return getenv(GIT_HUB__ACCESS_TOKEN)
 
-    def file_download(self, repo, branch, file_path):
-        download_url = f'{GIT_HUB__REPO_PATH}/{repo}/{branch}/{file_path}'
-        pprint(download_url)
-        headers  = {'Authorization'  : f'token {self.access_token()}',
-                    'Accept-Encoding': 'gzip'}
-        response = self.session.get(download_url, headers=headers)
-        return response.text
+    # def file_download(self, repo, branch, file_path):
+    #     download_url = f'{GIT_HUB__REPO_PATH}/{repo}/{branch}/{file_path}'
+    #     pprint(download_url)
+    #     headers  = {'Authorization'  : f'token {self.access_token()}',
+    #                 'Accept-Encoding': 'gzip'}
+    #     response = self.session.get(download_url, headers=headers)
+    #     return response.text
 
     def github(self):
         return Github(self.access_token())

@@ -1,5 +1,7 @@
 from os import environ
 
+from osbot_github.api.GitHub__API import GitHub__API
+from osbot_github.schemas.Schema__Repo import Schema__Repo
 from osbot_github.schemas.Schema__Repos import Schema__Repos
 from osbot_utils.decorators.methods.cache_on_self   import cache_on_self
 from osbot_utils.helpers.sqlite.Sqlite__Database    import Sqlite__Database
@@ -12,6 +14,8 @@ SQLITE_TABLE__REPOS       = 'repos'
 
 
 class Sqlite__GitHub(Sqlite__Database):
+
+    github_api : GitHub__API
 
     def __init__(self):
         super().__init__(db_path=self.path_sqlite_github())
@@ -38,7 +42,7 @@ class Sqlite__GitHub(Sqlite__Database):
 
     def table_repos__create(self):
         with self.table_repos() as _:
-            _.row_schema = Schema__Repos                        # set the table row's schema
+            _.row_schema = Schema__Repo                        # set the table row's schema
             if _.exists() is False:
                 _.create()                                          # create if it doesn't exist
                 return True
