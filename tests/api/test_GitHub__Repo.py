@@ -5,6 +5,7 @@ from osbot_github.api.GitHub__Repo          import GitHub__Repo
 from osbot_github.api.cache.GitHub__API__Cache import GitHub__API__Cache
 from osbot_github.dbs.Table__GitHub__Repos  import REPO__OSBOT_GIT_HUB
 from osbot_github.utils.Version             import Version
+from osbot_utils.utils.Dev import pprint
 #from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Files                import parent_folder, file_name
 from osbot_utils.utils.Misc                 import list_set
@@ -18,6 +19,7 @@ class test_GitHub__Repo(TestCase):
 
     @classmethod
     def setUpClass(cls):
+        load_dotenv()
         cls.github_api_cache = GitHub__API__Cache().patch_apply()
 
         load_dotenv()
@@ -43,7 +45,8 @@ class test_GitHub__Repo(TestCase):
             break
 
     def test_file_content(self):
-        self.github_api_cache.update()
+        self.github_api_cache.print_requests = True
+        #self.github_api_cache.update()
         file_path = 'osbot_github/version'
         assert self.github_repo.file_content(file_path).strip() == Version().value()
         self.github_api_cache.update(False)

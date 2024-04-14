@@ -19,7 +19,6 @@ class test_Table__GitHub__Repos(TestCase):
     def tearDownClass(cls):
         cls.github_api_cache.patch_restore()
 
-
     def setUp(self):
         self.github_repos = Table__GitHub__Repos()
 
@@ -32,12 +31,6 @@ class test_Table__GitHub__Repos(TestCase):
         assert type(github_repo) is GitHub__Repo
         assert github_repo.full_name == repo_full_name
 
-
-        #pprint(result)
     def test_table(self):
         with self.github_repos.table() as _:
             assert type(_) is Sqlite__Table
-
-    # def test_raw_github_repos(self):
-    #     result = self.github_repos.raw_github_repos()
-    #     pprint(result)
