@@ -45,7 +45,8 @@ class test_GitHub__Repo(TestCase):
             break
 
     def test_file_content(self):
-        self.github_api_cache.print_requests = True
+
+        #self.github_api_cache.print_requests = True
         #self.github_api_cache.update()
         file_path = 'osbot_github/version'
         assert self.github_repo.file_content(file_path).strip() == Version().value()
