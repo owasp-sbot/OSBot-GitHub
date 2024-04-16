@@ -73,7 +73,7 @@ class test_GitHub__Repo(TestCase):
         assert list_set(result[0]) == ['download_url', 'last_modified', 'name', 'path', 'sha', 'size', 'type']
 
     def test_folders_and_files(self):
-        result = self.github_repo.folders_and_files("docs", index_by='path')
+        result = self.github_repo.all_folders_and_files("docs", index_by='path')
         assert self.test_file_path in result
         assert len(result) > 1
 

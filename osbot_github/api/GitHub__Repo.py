@@ -4,12 +4,45 @@ from osbot_utils.base_classes.Kwargs_To_Self        import Kwargs_To_Self
 from osbot_utils.decorators.lists.group_by          import group_by
 from osbot_utils.decorators.lists.index_by          import index_by
 from osbot_utils.decorators.methods.cache_on_self   import cache_on_self
+from osbot_utils.utils.Lists import list_group_by
 from osbot_utils.utils.Misc                         import datetime_to_str
 
 
 class GitHub__Repo(Kwargs_To_Self):
     github_api : GitHub__API
     full_name  : str
+
+    @index_by
+    @group_by
+    def all_files(self, path):
+        return self.all_folders_and_files__of_type(type_name='file', path=path)
+
+    @index_by
+    @group_by
+    def all_folders(self, path):
+        return self.all_folders_and_files__of_type(type_name='dir', path=path)
+    # note this can be VERY slow (when running on root, not having a cache and when there are lots of files)
+    @index_by
+    @group_by
+    def all_folders_and_files(self, path=""):
+        all_contents = []
+        current_folder_contents = self.folder_contents(path)
+
+        for item in current_folder_contents:
+            all_contents.append(item)
+            if item['type'] == 'dir':
+                all_contents.extend(self.all_folders_and_files(item['path']))
+        return all_contents
+
+    @index_by
+    @group_by
+    def all_folders_and_files__of_type(self, type_name, path=""):
+        items = []
+        for item in self.all_folders_and_files(path=path):
+            if item.get('type') == type_name:
+                items.append(item)
+        return items
+
 
     def commits(self, page=0):
         raw_commits = self.repo().get_commits().get_page(page)
@@ -52,25 +85,16 @@ class GitHub__Repo(Kwargs_To_Self):
     @index_by
     @group_by
     def folder_files(self, path=""):
-        return self.folder_contents(path, group_by='type').get('file', [])
+        items = self.folder_contents(path)
+        items_by_type = list_group_by(items, group_by='type')
+        return items_by_type.get('file', [])
 
     @index_by
     @group_by
     def folder_folders(self, path=""):
-        return self.folder_contents(path, group_by='type').get('dir', [])
-
-    # this is VERY slow (when running on root)
-    @index_by
-    @group_by
-    def folders_and_files(self, path=""):
-        all_contents = []
-        current_folder_contents = self.folder_contents(path)
-
-        for item in current_folder_contents:
-            all_contents.append(item)
-            if item['type'] == 'dir':
-                all_contents.extend(self.folders_and_files(item['path']))
-        return all_contents
+        items = self.folder_contents(path)
+        items_by_type = list_group_by(items, group_by='type')
+        return items_by_type.get('dir', [])
 
     def info(self):
         return self.repo_data()
