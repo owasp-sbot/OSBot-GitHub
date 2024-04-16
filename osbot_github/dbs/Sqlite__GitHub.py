@@ -1,11 +1,12 @@
 from os import environ
 
-from osbot_github.api.GitHub__API                   import GitHub__API
-from osbot_github.schemas.Schema__Repo              import Schema__Repo
-from osbot_utils.decorators.methods.cache_on_self   import cache_on_self
-from osbot_utils.helpers.sqlite.Sqlite__Database    import Sqlite__Database
-from osbot_utils.utils.Files                        import current_temp_folder, path_combine, folder_create
-from osbot_utils.utils.Str                          import str_safe
+from osbot_github.api.GitHub__API                            import GitHub__API
+from osbot_github.schemas.Schema__Repo                       import Schema__Repo
+from osbot_utils.decorators.methods.cache_on_self            import cache_on_self
+from osbot_utils.helpers.sqlite.Sqlite__Database             import Sqlite__Database
+from osbot_utils.helpers.sqlite.tables.Sqlite__Table__Config import Sqlite__Table__Config
+from osbot_utils.utils.Files                                 import current_temp_folder, path_combine, folder_create
+from osbot_utils.utils.Str                                   import str_safe
 
 DB_NAME__GIT_HUB          = 'github__{type}__{name}.sqlite'
 ENV_NAME_PATH_LOCAL_DBS   = 'PATH_LOCAL_DBS'
@@ -37,6 +38,10 @@ class Sqlite__GitHub(Sqlite__Database):
             raise ValueError("In Sqlite__GitHub, config.name and config.type values must be set")
         db_filename = str_safe(DB_NAME__GIT_HUB.format(type=type, name=name))
         return path_combine(self.path_github_dbs(), db_filename)
+
+    @cache_on_self
+    def table_config(self):
+        return Sqlite__Table__Config(database=self).setup()
 
     def setup(self, config_data):
         folder_create(self.path_db_folder())
