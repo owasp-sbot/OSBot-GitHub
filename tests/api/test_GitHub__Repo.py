@@ -1,14 +1,12 @@
-from unittest                               import TestCase
-from dotenv                                 import load_dotenv
-from osbot_github.api.GitHub__API           import GitHub__API
-from osbot_github.api.GitHub__Repo          import GitHub__Repo
-from osbot_github.api.cache.GitHub__API__Cache import GitHub__API__Cache
-from osbot_github.dbs.Table__GitHub__Repos  import REPO__OSBOT_GIT_HUB
-from osbot_github.utils.Version             import Version
-from osbot_utils.utils.Dev import pprint
-#from osbot_utils.utils.Dev import pprint
-from osbot_utils.utils.Files                import parent_folder, file_name
-from osbot_utils.utils.Misc                 import list_set
+from unittest                                   import TestCase
+from dotenv                                     import load_dotenv
+from osbot_github.api.GitHub__API               import GitHub__API
+from osbot_github.api.GitHub__Repo              import GitHub__Repo
+from osbot_github.api.cache.GitHub__API__Cache  import GitHub__API__Cache
+from osbot_github.utils.Version                 import Version
+from osbot_utils.utils.Files                    import parent_folder, file_name
+from osbot_utils.utils.Misc                     import list_set
+from tests.api.cache.test_GitHub__API__Cache import GIT_HUB__REPO__OSBOT_GITHUB
 
 
 class test_GitHub__Repo(TestCase):
@@ -23,7 +21,7 @@ class test_GitHub__Repo(TestCase):
         cls.github_api_cache = GitHub__API__Cache().patch_apply()
 
         load_dotenv()
-        cls.repo_full_name         = REPO__OSBOT_GIT_HUB
+        cls.repo_full_name         = GIT_HUB__REPO__OSBOT_GITHUB
         cls.github_repo            = GitHub__Repo(full_name=cls.repo_full_name)
         cls.test_file_path         = 'docs/test_files/an_markdown_file.md'
 
@@ -85,13 +83,13 @@ class test_GitHub__Repo(TestCase):
 
     def test_repo(self):
         repo           = self.github_repo.repo()
-        repo_full_name = REPO__OSBOT_GIT_HUB
+        repo_full_name = GIT_HUB__REPO__OSBOT_GITHUB
         repo_name     = file_name(repo_full_name, check_if_exists=False)
         assert repo.default_branch == 'dev'
         assert repo.id             ==  784967553
         assert repo.full_name      == repo_full_name
         assert repo.name           == repo_name
-        assert repo.git_url        == f'git://github.com/{REPO__OSBOT_GIT_HUB}.git'
+        assert repo.git_url        == f'git://github.com/{GIT_HUB__REPO__OSBOT_GITHUB}.git'
 
     def test_repo_data(self):
         repo_data = self.github_repo.repo_data()

@@ -13,6 +13,7 @@ from osbot_github.dbs.Sqlite__GitHub import Sqlite__GitHub, ENV_NAME_PATH_LOCAL_
 from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Files import parent_folder, file_name, file_exists, folder_exists, current_temp_folder
 from osbot_utils.utils.Objects import obj_info
+from osbot_utils.utils.Str import str_safe
 
 GIT_HUB__TEST__ORGANIZATION = 'Owasp-SBot'
 
@@ -20,7 +21,9 @@ class test_Sqlite__GitHub(TestCase__GitHub__API):
 
     def setUp(self):
         load_dotenv()
-        self.db_github  = Sqlite__GitHub()
+        self.config_data = { 'name'     : GIT_HUB__TEST__ORGANIZATION,
+                             'name_type': 'organization'             }
+        self.db_github  = Sqlite__GitHub(self.config_data)
         self.github_api = self.db_github.github_api
 
     def test_setup(self):
@@ -31,11 +34,12 @@ class test_Sqlite__GitHub(TestCase__GitHub__API):
                 assert parent_folder(_.path_github_dbs()) == environ.get(ENV_NAME_PATH_LOCAL_DBS)
             else:
                 assert parent_folder(_.path_github_dbs()) == current_temp_folder()
-            assert file_name    (_.db_path)           == DB_NAME__GIT_HUB
+            assert file_name    (_.db_path)           == str_safe(DB_NAME__GIT_HUB.format(type=self.config_data.get('name_type'), name=self.config_data.get('name')))
             assert folder_exists(_.path_db_folder() ) is True
             assert folder_exists(_.path_github_dbs()) is True
             assert file_exists(_.db_path)             is True
-            assert _.tables_names()                   == [SQLITE_TABLE__REPOS]
+            assert _.tables_names()                   == [SQLITE_TABLE__REPOS, 'config', 'idx__config__key']
+            assert _.table_config().config_data()     == self.config_data
 
     def test_table_repos(self):
 
@@ -44,26 +48,4 @@ class test_Sqlite__GitHub(TestCase__GitHub__API):
             assert _.exists() is True
             assert _.row_schema == Schema__Repo
 
-            # return
-            # #assert _.rows() == []
-            #
-            #
-            # print()
-            # #self.github_api_cache.print_requests = True
-            #
-            # organisation = self.github_api.organization(GIT_HUB__TEST__ORGANIZATION)
-            # repos        = organisation.get_repos()
-            #
-            # for repo in repos:
-            #     if _.not_contains(full_name=repo.full_name):
-            #         print(f'adding details about repo {repo.full_name}')
-            #         github_repo = GitHub__Repo(repo_name = repo.full_name)
-            #
-            #         row_obj = _.new_row_obj(github_repo.repo_data())
-            #         _.row_add(row_obj)
-            #
-            # _.commit()
-            # assert len(_.rows()) > 0
-            #
-            # #pprint(repos[0])
 

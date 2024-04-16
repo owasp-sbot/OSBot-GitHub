@@ -1,13 +1,13 @@
 from os import environ
 
-from osbot_github.api.GitHub__API import GitHub__API
-from osbot_github.schemas.Schema__Repo import Schema__Repo
-from osbot_github.schemas.Schema__Repos import Schema__Repos
+from osbot_github.api.GitHub__API                   import GitHub__API
+from osbot_github.schemas.Schema__Repo              import Schema__Repo
 from osbot_utils.decorators.methods.cache_on_self   import cache_on_self
 from osbot_utils.helpers.sqlite.Sqlite__Database    import Sqlite__Database
 from osbot_utils.utils.Files                        import current_temp_folder, path_combine, folder_create
+from osbot_utils.utils.Str                          import str_safe
 
-DB_NAME__GIT_HUB          = 'github.sqlite'
+DB_NAME__GIT_HUB          = 'github__{type}__{name}.sqlite'
 ENV_NAME_PATH_LOCAL_DBS   = 'PATH_LOCAL_DBS'
 FOLDER_NAME__GIT_HUB_DBS  = 'github_dbs'
 SQLITE_TABLE__REPOS       = 'repos'
@@ -17,9 +17,12 @@ class Sqlite__GitHub(Sqlite__Database):
 
     github_api : GitHub__API
 
-    def __init__(self):
-        super().__init__(db_path=self.path_sqlite_github())
-        self.setup()
+    def __init__(self, config_data: dict):
+        super().__init__(db_path=self.path_sqlite_github(config_data))
+        self.setup(config_data)
+
+    def config_data(self):
+        return self.table_config().data()
 
     def path_db_folder(self):
         return environ.get(ENV_NAME_PATH_LOCAL_DBS) or current_temp_folder()
@@ -27,13 +30,19 @@ class Sqlite__GitHub(Sqlite__Database):
     def path_github_dbs(self):
         return path_combine(self.path_db_folder(), FOLDER_NAME__GIT_HUB_DBS)
 
-    def path_sqlite_github(self):
-        return path_combine(self.path_github_dbs(), DB_NAME__GIT_HUB)
+    def path_sqlite_github(self, config_data):
+        name = config_data.get('name'     )
+        type = config_data.get('name_type')
+        if not name or not type:
+            raise ValueError("In Sqlite__GitHub, config.name and config.type values must be set")
+        db_filename = str_safe(DB_NAME__GIT_HUB.format(type=type, name=name))
+        return path_combine(self.path_github_dbs(), db_filename)
 
-    def setup(self):
+    def setup(self, config_data):
         folder_create(self.path_db_folder())
         folder_create(self.path_github_dbs())
         self.table_repos__create()
+        self.table_config().set_config_data(config_data)
         return self
 
     @cache_on_self

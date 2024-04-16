@@ -111,7 +111,7 @@ class GitHub__Repo(Kwargs_To_Self):
             "language"      : repo.language                          ,
             "name"          : repo.name                              ,
             "owner"         : repo.owner.login                       ,
-            "organisation"  : repo.organization.login                ,
+            "organisation"  : ''                                     ,
             "parent"        : ''                                     ,
             "private"       : repo.private                           ,
             "pushed_at"     : int(repo.pushed_at.timestamp () * 1000),
@@ -123,6 +123,8 @@ class GitHub__Repo(Kwargs_To_Self):
             "visibility"    : repo.visibility                        ,
             "watchers"      : repo.watchers_count                    ,
         }
+        if repo.organization:
+            repo_data["organisation"]: repo.organization.login
         if repo.parent:
             repo_data['parent'] = repo.parent.full_name
         return repo_data
