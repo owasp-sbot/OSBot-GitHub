@@ -11,23 +11,25 @@ from osbot_github.dbs.Sqlite__GitHub__Files         import Sqlite__GitHub__Files
 from osbot_utils.helpers.sqlite.domains.Sqlite__DB__Files import Sqlite__DB__Files
 from osbot_utils.helpers.sqlite.domains.Sqlite__DB__Local import Sqlite__DB__Local
 from osbot_utils.utils.Dev                          import pprint
-from osbot_utils.utils.Files import parent_folder, current_temp_folder, file_name, temp_file
+from osbot_utils.utils.Files import parent_folder, current_temp_folder, file_name, temp_file, file_extension
 from osbot_utils.utils.Misc                         import list_set
 from osbot_utils.utils.Objects import obj_methods, obj_data, base_types, type_mro
 from tests.api.cache.test_GitHub__API__Cache        import GIT_HUB__REPO__OSBOT_GITHUB
 
 
 class test_Sqlite__GitHub__Files(TestCase__GitHub__API):
-    github_files  : Sqlite__GitHub__Files
-    repo_full_name: str
-    temp_db_path  : str
+    expected_db_name: str
+    github_files    : Sqlite__GitHub__Files
+    repo_full_name  : str
+    temp_db_path    : str
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.temp_db_path = temp_file(extension='sqlite')
-        cls.repo_full_name = GIT_HUB__REPO__OSBOT_GITHUB
-        cls.github_files = Sqlite__GitHub__Files(repo_full_name=cls.repo_full_name, db_path=cls.temp_db_path)
+        cls.repo_full_name   = GIT_HUB__REPO__OSBOT_GITHUB
+        cls.temp_db_path     = temp_file(extension='sqlite')
+        cls.github_files     = Sqlite__GitHub__Files(repo_full_name=cls.repo_full_name, db_path=cls.temp_db_path)
+        cls.github_files.setup()
 
     @classmethod
     def tearDownClass(cls):
@@ -37,17 +39,20 @@ class test_Sqlite__GitHub__Files(TestCase__GitHub__API):
             assert _.deleted  is True                           # deleted flag should now be set
             assert _.delete() is False                          # deleting db should NOT work second time
 
+    def tearDown(self):
+        self.github_files.table_files().clear()
+
     def test___init__(self):
-        expected_db_name = SQLITE_DB_NAME.format(repo_full_name=self.repo_full_name)
+        #cls.expected_db_name = SQLITE_DB_NAME.format(repo_full_name=cls.repo_full_name)
         with self.github_files as _:
-            assert _.exists()               is False                    # BUG
-            assert parent_folder(_.db_path) == current_temp_folder()
-            assert file_name    (_.db_path) is None                     # BUG     should be expected_db_name
+            assert _.exists()               is True
+            assert parent_folder (_.db_path) == current_temp_folder()
+            assert file_extension(_.db_path) == '.sqlite'
             assert type(_.github_api)       is GitHub__API
             assert _.__locals__() == { 'auto_schema_row': False              ,
                                        'closed'         : False              ,
-                                       'connected'      : False              ,
-                                       'db_name'        : expected_db_name   ,
+                                       'connected'      : True               ,
+                                       'db_name'        : _.db_name          ,
                                        'db_path'        : _.db_path          ,
                                        'deleted'        : False              ,
                                        'full_name'      : self.repo_full_name,
@@ -69,6 +74,16 @@ class test_Sqlite__GitHub__Files(TestCase__GitHub__API):
             #                          'save_to', 'serialize_to_dict', 'setup',
             #                          'table', 'table__sqlite_master', 'table_files', 'tables', 'tables_names', 'tables_raw',
             #                          'update_from_kwargs']
+
+    def test_add_github_files_to_db(self):
+        add_all = False
+        path    = ''
+
+        with self.github_files as _:
+            assert _.files() == []
+            rows_added = _.add_github_files_to_db(path=path, add_all=add_all)
+            assert len(_.files()) > 0
+            assert len(_.files()) == len(rows_added)
 
 
     def test_folder_files(self):

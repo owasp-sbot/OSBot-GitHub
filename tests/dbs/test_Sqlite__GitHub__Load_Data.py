@@ -56,5 +56,6 @@ class test_Sqlite__GitHub__Load_Data__for__User(TestCase__GitHub__API):
             assert file_name(self.sqlite_github.db_path) == DB_NAME__GIT_HUB.format(name=name, type=name_type)
 
     def test_load_repos(self):
-        result = self.load_data.load_repos()
-        #pprint(self.cache.sqlite_requests.db_path)
+        self.load_data.load_repos()
+        with self.sqlite_github.table_repos() as _:
+            assert len(_.rows()) > 10
