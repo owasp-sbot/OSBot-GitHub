@@ -3,7 +3,7 @@ name: Publish to PyPI
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Increment Tag - Dev branch"]
+    workflows: ["Increment Tag - Main branch"]
     types:
       - completed
 
