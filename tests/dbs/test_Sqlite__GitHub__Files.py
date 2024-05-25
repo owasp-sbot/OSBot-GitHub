@@ -90,7 +90,12 @@ class test_Sqlite__GitHub__Files(TestCase__GitHub__API):
         initial_path = '/'
         with self.github_files as _:
             files = _.folder_files(path=initial_path, index_by='path')
-            assert list_set(files) == [ '.gitignore', 'LICENSE', 'README.md', 'git-publish-main.sh', 'requirements.txt', 'setup.py']
+            assert list_set(files) == [ '.gitignore', 'LICENSE',
+                                        'README.md',
+                                        'git-publish-main.sh',
+                                        'poetry.lock',
+                                        'pyproject.toml',
+                                        'requirements.txt']
             # return
             # all_items = _.folder_files(path=initial_path)
             # for item in all_items:
