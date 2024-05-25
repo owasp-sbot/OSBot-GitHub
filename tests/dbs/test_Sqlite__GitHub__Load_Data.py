@@ -1,3 +1,4 @@
+import pytest
 from dotenv import load_dotenv
 
 from osbot_github.api.cache.TestCase__GitHub__API import TestCase__GitHub__API
@@ -55,6 +56,7 @@ class test_Sqlite__GitHub__Load_Data__for__User(TestCase__GitHub__API):
             assert self.sqlite_github.config_data() == self.config_data
             assert file_name(self.sqlite_github.db_path) == DB_NAME__GIT_HUB.format(name=name, type=name_type)
 
+    @pytest.mark.skip("hits GH error of failed with 403: rate limit exceeded")
     def test_load_repos(self):
         self.load_data.load_repos()
         with self.sqlite_github.table_repos() as _:
