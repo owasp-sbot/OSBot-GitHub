@@ -1,4 +1,4 @@
-name       : Run Unit Tests
+name       : Run Tests - Unit
 on:
   push
 
@@ -6,14 +6,15 @@ jobs:
   run-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
       - name: Install Dependencies
-        uses: ./.github/actions/install-dependencies
+        uses: ./.github/actions/install-dependencies-poetry
 
       - name: Run Unit Tests
-        uses: ./.github/actions/run-unit-tests
+        uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/run-unit-tests@main
         with:
-          codecov_token         : ${{ secrets.CODECOV_TOKEN         }}
-          package_name          : ${{ secrets.PACKAGE_NAME          }}
-          GIT_HUB__ACCESS_TOKEN : ${{ secrets.GIT_HUB__ACCESS_TOKEN }}
+          package_name          : 'osbot_github'
+          codecov_token         : ${{ secrets.CODECOV_TOKEN          }}
+          #GIT_HUB__ACCESS_TOKEN : ${{ secrets.GIT_HUB__ACCESS_TOKEN  }}
 
