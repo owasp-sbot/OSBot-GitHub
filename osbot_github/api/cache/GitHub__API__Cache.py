@@ -1,5 +1,6 @@
 from github.Requester                                      import Requester
-from osbot_utils.helpers.sqlite.domains.Sqlite__Cache__Requests__Patch import Sqlite__Cache__Requests__Patch
+
+from osbot_utils.helpers.sqlite.cache.Sqlite__Cache__Requests__Patch import Sqlite__Cache__Requests__Patch
 
 SQLITE_DB_NAME__GIT_HUB_API_CACHE = 'github_api_cache.sqlite'
 SQLITE_TABLE__GITHUB_API_REQUESTS = 'github_api_requests'
