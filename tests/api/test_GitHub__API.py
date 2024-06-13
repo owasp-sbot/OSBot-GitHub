@@ -5,7 +5,8 @@ from github.PaginatedList                           import PaginatedList
 from github.Repository                              import Repository
 from osbot_github.api.GitHub__API                   import GitHub__API
 from osbot_github.api.cache.TestCase__GitHub__API   import TestCase__GitHub__API
-from osbot_utils.utils.Misc import list_set, in_github_action
+from osbot_utils.utils.Env                          import in_github_action
+from osbot_utils.utils.Misc                         import list_set
 from osbot_utils.utils.Objects                      import pickle_save_to_bytes, pickle_load_from_bytes, obj_data
 from tests.api.cache.test_GitHub__API__Cache        import GIT_HUB__USER_NAME, GIT_HUB__ORG_NAME__OWASP_SBOT, GIT_HUB__REPO__OSBOT_GITHUB
 

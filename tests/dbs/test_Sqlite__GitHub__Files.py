@@ -93,9 +93,10 @@ class test_Sqlite__GitHub__Files(TestCase__GitHub__API):
             assert list_set(files) == [ '.gitignore', 'LICENSE',
                                         'README.md',
                                         'git-publish-main.sh',
-                                        'poetry.lock',
-                                        'pyproject.toml',
-                                        'requirements.txt']
+                                        #'poetry.lock',
+                                        #'pyproject.toml',
+                                        'requirements.txt',
+                                        'setup.py']
             # return
             # all_items = _.folder_files(path=initial_path)
             # for item in all_items:
