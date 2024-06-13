@@ -10,6 +10,7 @@ from osbot_github.api.cache.TestCase__GitHub__API   import TestCase__GitHub__API
 from osbot_github.dbs.Sqlite__GitHub__Files         import Sqlite__GitHub__Files, SQLITE_DB_NAME
 from osbot_utils.helpers.sqlite.domains.Sqlite__DB__Files import Sqlite__DB__Files
 from osbot_utils.helpers.sqlite.domains.Sqlite__DB__Local import Sqlite__DB__Local
+from osbot_utils.helpers.trace.Trace_Call import trace_calls
 from osbot_utils.utils.Dev                          import pprint
 from osbot_utils.utils.Files import parent_folder, current_temp_folder, file_name, temp_file, file_extension
 from osbot_utils.utils.Misc                         import list_set
@@ -92,14 +93,16 @@ class test_Sqlite__GitHub__Files(TestCase__GitHub__API):
         initial_path = '/'
         with self.github_files as _:
             files = _.folder_files(path=initial_path, index_by='path')
-            assert list_set(files) == [ '.gitignore', 'LICENSE',
-                                        'README.md',
-                                        'git-publish-main.sh',
-                                        #'poetry.lock',
-                                        #'pyproject.toml',
-                                        'requirements.txt',
-                                        'setup.py']
+            assert list_set(files) == [ '.gitignore'           ,
+                                        'LICENSE'              ,
+                                        'README.md'            ,
+                                        'git-publish-main.sh'  ,
+                                        'poetry.lock'          ,
+                                        'pyproject.toml'       ,
+                                        'requirements-test.txt',
+                                        'requirements.txt'     ]
             # return
             # all_items = _.folder_files(path=initial_path)
             # for item in all_items:
             #     print(item.get('path'))
+
