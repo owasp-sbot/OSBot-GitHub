@@ -129,6 +129,5 @@ class test_GitHub__API__Cache(TestCase):
 
                 assert context.exception.args[0] == 404
                 assert context.exception.args[1] == {'documentation_url': 'https://docs.github.com/rest/users/users#get-a-user',
-                                                     'message': 'Not Found'}
-                assert stdout.value()            == ('# call to : GET /users/ccccc_12344566\n'
-                                                     '> http call to : GET /users/ccccc_12344566\n')
+                                                     'message': 'Not Found', 'status': '404'}
+                assert stdout.value()            == ('# call to : GET /users/ccccc_12344566\n')

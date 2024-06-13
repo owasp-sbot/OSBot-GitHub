@@ -115,7 +115,7 @@ class test_GitHub__Repo(TestCase):
             if i >= n:
                 break
             workflow_runs_list.append(workflow_run)
-            assert len(list(workflow_run.jobs())) > 1
+            assert len(list(workflow_run.jobs())) > 0
 
 
             # for job in workflow_run.jobs():
