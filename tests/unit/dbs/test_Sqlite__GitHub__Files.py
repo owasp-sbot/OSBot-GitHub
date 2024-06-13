@@ -31,6 +31,8 @@ class test_Sqlite__GitHub__Files(TestCase__GitHub__API):
         cls.github_files     = Sqlite__GitHub__Files(repo_full_name=cls.repo_full_name, db_path=cls.temp_db_path)
         cls.github_files.setup()
 
+
+
     @classmethod
     def tearDownClass(cls):
         with cls.github_files as _:
