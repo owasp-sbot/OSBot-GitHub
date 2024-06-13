@@ -27,6 +27,7 @@ class test_Sqlite__GitHub__Files(TestCase__GitHub__API):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        #cls.cache.update()
         cls.repo_full_name   = GIT_HUB__REPO__OSBOT_GITHUB
         cls.temp_db_path     = temp_file(extension='sqlite')
         cls.github_files     = Sqlite__GitHub__Files(repo_full_name=cls.repo_full_name, db_path=cls.temp_db_path)
@@ -96,7 +97,7 @@ class test_Sqlite__GitHub__Files(TestCase__GitHub__API):
             assert list_set(files) == [ '.gitignore'           ,
                                         'LICENSE'              ,
                                         'README.md'            ,
-                                        'git-publish-main.sh'  ,
+                                        'gh-publish-main.sh'  ,
                                         'poetry.lock'          ,
                                         'pyproject.toml'       ,
                                         'requirements-test.txt',
