@@ -13,8 +13,8 @@ from osbot_utils.helpers.sqlite.domains.Sqlite__DB__Local import Sqlite__DB__Loc
 from osbot_utils.utils.Dev                          import pprint
 from osbot_utils.utils.Files import parent_folder, current_temp_folder, file_name, temp_file, file_extension
 from osbot_utils.utils.Misc                         import list_set
-from osbot_utils.utils.Objects import obj_methods, obj_data, base_types, type_mro
-from tests.api.cache.test_GitHub__API__Cache        import GIT_HUB__REPO__OSBOT_GITHUB
+from osbot_utils.utils.Objects                      import obj_methods, obj_data, base_types, type_mro
+from tests.unit.api.cache.test_GitHub__API__Cache    import GIT_HUB__REPO__OSBOT_GITHUB
 
 
 class test_Sqlite__GitHub__Files(TestCase__GitHub__API):

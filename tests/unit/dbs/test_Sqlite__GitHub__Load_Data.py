@@ -6,8 +6,8 @@ from osbot_github.dbs.Sqlite__GitHub import Sqlite__GitHub, DB_NAME__GIT_HUB
 from osbot_github.dbs.Sqlite__GitHub__Load_Data import Sqlite__GitHub__Load_Data
 from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Files import file_name
-from tests.api.cache.test_GitHub__API__Cache import GIT_HUB__USER_NAME
-from tests.dbs.test_Sqlite__GitHub import GIT_HUB__TEST__ORGANIZATION
+from tests.unit.api.cache.test_GitHub__API__Cache import GIT_HUB__USER_NAME
+from tests.unit.dbs.test_Sqlite__GitHub import GIT_HUB__TEST__ORGANIZATION
 
 
 

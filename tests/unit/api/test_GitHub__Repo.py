@@ -1,12 +1,12 @@
-from unittest                                   import TestCase
-from dotenv                                     import load_dotenv
-from osbot_github.api.GitHub__API               import GitHub__API
-from osbot_github.api.GitHub__Repo              import GitHub__Repo
-from osbot_github.api.cache.GitHub__API__Cache  import GitHub__API__Cache
-from osbot_github.utils.Version                 import Version
-from osbot_utils.utils.Files                    import parent_folder, file_name
-from osbot_utils.utils.Misc                     import list_set
-from tests.api.cache.test_GitHub__API__Cache import GIT_HUB__REPO__OSBOT_GITHUB
+from unittest                                     import TestCase
+from dotenv                                       import load_dotenv
+from osbot_github.api.GitHub__API                 import GitHub__API
+from osbot_github.api.GitHub__Repo                import GitHub__Repo
+from osbot_github.api.cache.GitHub__API__Cache    import GitHub__API__Cache
+from osbot_github.utils.Version                   import Version
+from osbot_utils.utils.Files                      import parent_folder, file_name
+from osbot_utils.utils.Misc                       import list_set
+from tests.unit.api.cache.test_GitHub__API__Cache import GIT_HUB__REPO__OSBOT_GITHUB
 
 
 class test_GitHub__Repo(TestCase):
